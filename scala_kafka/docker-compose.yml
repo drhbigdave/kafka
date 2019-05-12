@@ -1,0 +1,24 @@
+version: '3.6'
+services:
+  scala-kafka:
+    image: centos:latest
+    build: .
+    ports:
+      - target: 2181
+        published: 2181
+        protocol: tcp
+        mode: host
+      - 9092:9092
+      - 8081:8081
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://host.docker.internal:9092
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    volumes:
+      - /Users/davidhagan/projects/dockershare:/dockershare
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    command: tail -f /dev/null
